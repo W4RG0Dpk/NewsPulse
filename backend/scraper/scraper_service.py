@@ -48,3 +48,37 @@ def build_article_document(metadata):
     }
 
     return article_document
+
+def build_articles_from_feed(
+    source_name,
+    feed_url,
+    limit=5
+):
+
+    articles = fetch_feed(
+        source_name,
+        feed_url
+    )
+
+    documents = []
+
+    for metadata in articles[:limit]:
+
+        try:
+
+            document = build_article_document(
+                metadata
+            )
+
+            if document:
+                documents.append(document)
+
+        except Exception as e:
+
+            print(
+                f"Failed: {metadata['url']}"
+            )
+
+            print(e)
+
+    return documents

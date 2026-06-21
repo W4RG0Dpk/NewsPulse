@@ -1,17 +1,37 @@
-from scraper.rss_fetcher import RSS_FEEDS, fetch_feed
-from scraper.scraper_service import build_article_document
+"""from db.mongo import raw_articles
 
-from db.article_repository import save_article
+result = raw_articles.delete_many({})
 
-articles = fetch_feed(
+print(
+    f"Deleted {result.deleted_count} documents"
+)"""
+"""To delete all doc in raw_articles"""
+
+from scraper.rss_fetcher import RSS_FEEDS
+from scraper.scraper_service import (
+    build_articles_from_feed
+)
+
+from db.article_repository import (
+    save_many_articles
+)
+
+documents = build_articles_from_feed(
     "TheHindu",
-    RSS_FEEDS["TheHindu"]
+    RSS_FEEDS["TheHindu"],
+    limit=5
 )
 
-document = build_article_document(
-    articles[0]
+result = save_many_articles(
+    documents
 )
 
-inserted_id = save_article(document)
+print("\nPIPELINE RESULT")
 
-print("Inserted:", inserted_id)
+print(
+    f"Inserted : {result['inserted']}"
+)
+
+print(
+    f"Skipped  : {result['skipped']}"
+)
