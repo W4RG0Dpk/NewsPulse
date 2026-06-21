@@ -1,5 +1,17 @@
-from db.mongo import raw_articles
+from scraper.rss_fetcher import RSS_FEEDS, fetch_feed
 
-doc = raw_articles.find_one()
+for source, url in RSS_FEEDS.items():
 
-print(doc)
+    articles = fetch_feed(source, url)
+
+    print("\n" + "="*60)
+    print(source)
+    print("="*60)
+
+    print("Articles Found:", len(articles))
+
+    if articles:
+
+        print("\nFirst Article:\n")
+
+        print(articles[0])
