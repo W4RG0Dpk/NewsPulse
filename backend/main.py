@@ -119,10 +119,78 @@ print(
     f"{completed_count}"
 )"""
 
-from analytics.entity_analytics import (
-    get_top_entities
-)
+from search.hybrid_search import hybrid_search
 
-for item in get_top_entities():
+SEARCH_QUERIES = [
 
-    print(item)
+    "Iran",
+
+    "Yoga India",
+
+    "Technology",
+
+    "Apple",
+
+    "AI replacing programmers",
+
+    "iOS",
+
+    "Pakistan"
+
+]
+
+
+def print_results(results):
+
+    print(f"\nResults Returned : {len(results)}")
+
+    if not results:
+
+        print("No Results Found")
+
+        return
+
+    for idx, article in enumerate(results, start=1):
+
+        print("\n" + "-" * 80)
+
+        print(f"Result {idx}")
+
+        print("-" * 80)
+
+        print("Title      :", article["title"])
+
+        print("Source     :", article["source"])
+
+        print("Topic      :", article["topic"])
+
+        print("Strategy   :", article["strategy"])
+
+        if article.get("score") is not None:
+
+            print(f"Score      : {article['score']:.4f}")
+
+        print("\nSnippet:")
+
+        print(article["snippet"][:200])
+
+
+def run():
+
+    for query in SEARCH_QUERIES:
+
+        print("\n")
+        print("#" * 100)
+
+        print("QUERY :", query)
+
+        print("#" * 100)
+
+        results = hybrid_search(query)
+
+        print_results(results)
+
+
+if __name__ == "__main__":
+
+    run()
